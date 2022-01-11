@@ -1,0 +1,65 @@
+<div *ngIf="isIsLIST()">
+    <div class="mb-3 text-4xl uppercase font-semibold">Shoes</div>
+    <div class="flex mb-3">
+        <div class="flex-none">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" class="p-inputtext-sm" placeholder="Search..." />
+            </span>
+        </div>
+        <div class="flex-grow-1"></div>
+        <div class="flex-none">
+            <button pButton type="button" label="Add new" icon="pi pi-plus" class="p-button-sm"
+                (click)="changeStateAdd()"></button>
+        </div>
+    </div>
+
+    <p-table #pd [value]="lstProduct" [rows]="10" [paginator]="true" [(selection)]="selectedProducts" [rowHover]="true"
+        dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th class="uppercase">Name</th>
+                <th class="uppercase">Code</th>
+                <th class="uppercase">Image</th>
+                <th class="uppercase">Brand</th>
+                <th class="uppercase">Quantity</th>
+                <th class="uppercase">Status</th>
+                <th class="uppercase text-center">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                </td>
+                <td>{{product.name}}</td>
+                <td>{{product.code}}</td>
+                <td>{{product.image}}</td>
+                <td>{{product.brandName}}</td>
+                <td>{{product.quantity}}</td>
+                <td>
+                    <span
+                        [ngClass]="product.status ? 'bg-green-200 text-green-700 p-1 uppercase' : 'bg-pink-200 text-pink-700 p-1 uppercase'">{{product.status
+                        ? 'Available': 'Unavailable'}} </span>
+                </td>
+                <td class="text-center">
+                    <button pButton type="button" class="p-button-rounded p-button-success" icon="pi pi-eye"
+                        (click)="changeStateView()"></button>
+                    <button pButton type="button" class="p-button-rounded p-button-info ml-2" icon="pi pi-pencil"
+                        (click)="changeStateEdit()"></button>
+                    <button pButton type="button" class="p-button-rounded p-button-danger ml-2" icon="pi pi-trash"
+                        (click)="confirmDelete($event)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-confirmPopup></p-confirmPopup>
+    <p-toast></p-toast>
+</div>
+<app-add *ngIf="isIsADD()"></app-add>
+<app-edit *ngIf="isIsEDIT()"></app-edit>
+<app-view *ngIf="isIsVIEW()"></app-view>
